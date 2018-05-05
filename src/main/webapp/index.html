@@ -39,22 +39,24 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     list.searchcode = "";
     list.goodinfo={};
     list.shoplist = [];
+    
     list.showlist= !$.isEmptyObject(list.goodinfo);
+    list.showaddinfo = list.searchcode != "" && !list.showlist;
     
     list.scanQRCode = function(){
     	 wx.scanQRCode({
     	      needResult: 1,
     	      desc: 'scanQRCode desc',
     	      success: function (res) {
-    	    	  alert(res);
-    	    	  list.searchcode= res.resultStr.split(",")[0];
+    	    	  list.searchcode= res.resultStr.split(",")[1];
+    	    	  list.search();
     	      }
     	    });
     }
     
     list.search=function (){
     	if("" == list.searchcode){
-    		list.message = "商品コードを入力してから検索してください。";
+    		list.message = "请输入或扫描商品编号";
     		$('.ui.basic.modal') .modal('show');
     		return;
     	}
@@ -71,6 +73,7 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     			list.shoplist = result.data.shoplist;
     			list.goodinfo = result.data.goodinfo;
     			list.showlist= !$.isEmptyObject(list.goodinfo);
+    			list.showaddinfo = list.searchcode != "" && !list.showlist;
             }).catch(function (result) {
             	list.message = "SORRY!エラーが発生しました。";
             	$('.ui.basic.modal') .modal('show');
@@ -107,7 +110,7 @@ $(document).ready(function() {
 
 	function configWeiXin(appId, timestamp, nonceStr, signature) {
 		wx.config({
-			debug : true,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			debug : false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 			appId : appId,
 			timestamp : timestamp,
 			nonceStr : nonceStr,
@@ -185,7 +188,7 @@ body {
 					<div class="item">
 						<div class="ui action input">
 							<input type="text" style="width: 213px"
-								placeholder="Search by code" ng-model=list.searchcode>
+								placeholder="输入或者扫描商品编码开始查询" ng-model=list.searchcode>
 							<button class="ui icon button" ng-click="list.search()">
 								<i class="search icon"></i>
 							</button>
@@ -198,22 +201,28 @@ body {
 					</div>
 				</div>
 			</div>
-			<div ng-show=list.showlist>
 			<h4 class="ui horizontal divider header"></h4>
+			<div ng-show=list.showaddinfo>
+			<div class="row">
+			<a>未搜索到相关商品，点击追加>></a>
+			</div>
+			</div>
+			
+			<div ng-show=list.showlist>
 			<div class="row">
 				<div class="ui card">
 					<a class="image" href="#"> <img src={{list.goodinfo.imgurl}}>
 					</a>
 					<div class="content" style="text-align: center">
-						<a class="header" href="#">{{list.goodinfo.name}}</a>
+						<a class="header" href="#">{{list.goodinfo.code}}</a>
 						<div class="meta">
-							<a>Last Seen 2 days ago</a>
+							<a>{{list.goodinfo.name}}</a>
 						</div>
 					</div>
 				</div>
 			</div>
 			<h4 class="ui horizontal divider header">
-				<i class="tag icon"></i> List
+				<i class="tag icon"></i> 店铺一览
 			</h4>
 			<div class="row">
 				<div class="ui celled middle aligned divided list">

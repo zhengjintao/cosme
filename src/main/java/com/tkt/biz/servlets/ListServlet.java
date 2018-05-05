@@ -32,7 +32,7 @@ public class ListServlet extends HttpServlet {
 		good.setImgurl("asserts/images/lunch.jpeg");
 
 		GoodInfo good2 = new GoodInfo();
-		good2.setCode("0002");
+		good2.setCode("4936201100941");
 		good2.setName("food no2");
 		good2.setImgurl("asserts/images/lunch2.jpeg");
 
@@ -50,8 +50,8 @@ public class ListServlet extends HttpServlet {
 		shopinfo2.setPrice("299");
 
 		ShopGoodInfo shopinfo3 = new ShopGoodInfo();
-		shopinfo3.setGoodCode("0002");
-		shopinfo3.setShopName("shop1");
+		shopinfo3.setGoodCode("4936201100941");
+		shopinfo3.setShopName("松本清上野店");
 		shopinfo3.setPrice("399");
 
 		shopGoodInfoList.add(shopinfo);
