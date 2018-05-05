@@ -36,21 +36,33 @@ app.config(function($provide){
 
 app.controller('ListController', function($scope,$http,transFormFactory) {
     var list = this;
-    list.searchcode = "0000001";
-    list.goodinfo={name:"good", imgurl:"asserts/images/lunch.jpeg"};
-    list.shoplist = [
-    	{name:"name1", price:"199"},
-    	{name:"name2", price:"299"},
-    	{name:"name3", price:"399"}
-    ];
+    list.searchcode = "";
+    list.goodinfo={};
+    list.shoplist = [];
+    list.showlist= !$.isEmptyObject(list.goodinfo);
     
     list.search=function (){
-    	 list.shoplist = [
-    	    	{name:"name1", price:"199"},
-    	    	{name:"name2", price:"299"}
-         ]
-    	 
-    	 list.goodinfo={name:"good2", imgurl:"asserts/images/lunch2.jpeg"};
+    	if(list.searchcode.length=0){
+    		alert("Pleas input code then search again.");
+    		return;
+    	}
+    	$scope.url =  "list.do";
+    	var postdata = {'searchcode':list.searchcode};
+        $http(
+    		{
+    			method:"POST",
+    			url:$scope.url,
+    			data:postdata,
+    			transformRequest:transFormFactory.transForm,
+    			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+    		}).then(function (result) {
+    			list.shoplist = result.data.shoplist;
+    			list.goodinfo = result.data.goodinfo;
+    			list.showlist= !$.isEmptyObject(list.goodinfo);
+            }).catch(function (result) {
+            	orderList.message = "SORRY!エラーが発生しました。";
+            	$('.ui.basic.modal') .modal('show');
+            });
     }
    
   });
@@ -63,7 +75,7 @@ body {
 </style>
 
 </head>
-<body ng-controller="ListController as list" >
+<body ng-controller="ListController as list">
 
 	<div class="ui one column grid container">
 		<div class="column">
@@ -71,7 +83,8 @@ body {
 				<div class="ui middle aligned divided list">
 					<div class="item">
 						<div class="ui action input">
-							<input type="text" style="width: 213px" placeholder="Search by code" ng-model=list.searchcode>
+							<input type="text" style="width: 213px"
+								placeholder="Search by code" ng-model=list.searchcode>
 							<button class="ui icon button" ng-click="list.search()">
 								<i class="search icon"></i>
 							</button>
@@ -84,8 +97,8 @@ body {
 					</div>
 				</div>
 			</div>
-			<h4 class="ui horizontal divider header">
-			</h4>
+			<div ng-show=list.showlist>
+			<h4 class="ui horizontal divider header"></h4>
 			<div class="row">
 				<div class="ui card">
 					<a class="image" href="#"> <img src={{list.goodinfo.imgurl}}>
@@ -102,14 +115,15 @@ body {
 				<i class="tag icon"></i> List
 			</h4>
 			<div class="row">
-				<div class="ui middle aligned divided list" >
+				<div class="ui celled middle aligned divided list">
 					<div class="item" ng-repeat="shop in list.shoplist">
 						<div class="right floated content">
-							<div class="ui button">${{shop.price}}</div>
+							<a class="label">${{shop.price}}</a>
 						</div>
 						<div class="content">{{shop.name}}</div>
 					</div>
 				</div>
+			</div>
 			</div>
 		</div>
 

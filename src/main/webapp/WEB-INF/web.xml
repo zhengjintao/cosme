@@ -4,14 +4,34 @@
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
+	<filter>
+  	<filter-name>EncodingFilter</filter-name>
+  	<display-name>EncodingFilter</display-name>
+  	<description></description>
+  	<filter-class>com.tkt.biz.filters.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>EncodingFilter</filter-name>
+  	<url-pattern>*.do</url-pattern>
+  </filter-mapping>
 	<servlet>
 		<servlet-name>GetJsTicketServlet</servlet-name>
 		<display-name>GetJsTicketServlet</display-name>
 		<description></description>
 		<servlet-class>com.tkt.biz.servlets.GetJsTicketServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ListServlet</servlet-name>
+		<display-name>ListServlet</display-name>
+		<description></description>
+		<servlet-class>com.tkt.biz.servlets.ListServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>GetJsTicketServlet</servlet-name>
 		<url-pattern>/getJsTicket.do</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ListServlet</servlet-name>
+		<url-pattern>/list.do</url-pattern>
 	</servlet-mapping>
 </web-app>
