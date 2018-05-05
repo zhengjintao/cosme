@@ -42,8 +42,9 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     list.showlist= !$.isEmptyObject(list.goodinfo);
     
     list.search=function (){
-    	if(list.searchcode.length=0){
-    		alert("Pleas input code then search again.");
+    	if("" == list.searchcode){
+    		list.message = "商品コードを入力してから検索してください。";
+    		$('.ui.basic.modal') .modal('show');
     		return;
     	}
     	$scope.url =  "list.do";
@@ -60,7 +61,7 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     			list.goodinfo = result.data.goodinfo;
     			list.showlist= !$.isEmptyObject(list.goodinfo);
             }).catch(function (result) {
-            	orderList.message = "SORRY!エラーが発生しました。";
+            	list.message = "SORRY!エラーが発生しました。";
             	$('.ui.basic.modal') .modal('show');
             });
     }
@@ -77,6 +78,21 @@ body {
 </head>
 <body ng-controller="ListController as list">
 
+       <div class="ui basic modal" id="basemodal">
+		<div class="ui icon header">
+			<i class="archive icon"></i>{{list.message}}
+		</div>
+		<!-- <div class="content">
+			<p>Your inbox is getting full, would you like us to enable
+				automatic archiving of old messages?</p>
+		</div> -->
+		<div class="actions">
+			<div class="ui green basic cancel inverted button">
+				<i class="checkmark icon"></i> OK
+			</div>
+		</div>
+	    </div>
+	    
 	<div class="ui one column grid container">
 		<div class="column">
 			<div class="row">
