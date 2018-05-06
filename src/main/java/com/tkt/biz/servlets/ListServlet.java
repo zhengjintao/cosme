@@ -69,8 +69,8 @@ public class ListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String mode = request.getParameter("mode");
-		initdata();
 		if("search".equals(mode)){
+			initdata();
 			this.list(request, response);
 		}else if("listhot".equals(mode)){
 			this.listhot(request, response);
@@ -121,6 +121,31 @@ public class ListServlet extends HttpServlet {
 				i++;
 			}
 		}
+		
+		if(searchCode.length() >0){
+			String sql = "select * from cdata_good_add where goodscode=?";
+			Object[] params = new Object[1];
+			params[0] = searchCode;
+			List<Object> listgoods = JdbcUtil.getInstance().excuteQuery(sql, params);
+			
+			if(listgoods.size() > 0){
+				Map<String, Object> row = (Map<String, Object>) listgoods.get(0);
+				int count = (Integer)row.get("visitcount");
+				count++;
+				sql = "update cdata_good_add set visitcount=? where goodscode=?";
+				params = new Object[2];
+				params[0] = count;
+				params[1] = searchCode;
+				
+				JdbcUtil.getInstance().executeUpdate(sql, params);
+			}else{
+				sql = "insert into cdata_good_add values(?,?)";
+				params = new Object[2];
+				params[0] = searchCode;
+				params[1] = 0;
+				JdbcUtil.getInstance().executeUpdate(sql, params);
+			}
+		}
 
 		// 最終結果
 		JSONObject result = new JSONObject();
@@ -140,13 +165,16 @@ public class ListServlet extends HttpServlet {
 	 * @throws ServletException
 	 */
 	private void listhot(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
+		String sql = "select * from cdata_good_add ad left join cmstr_goods mstr on ad.goodscode = mstr.goodscode order by ad.visitcount desc";
+		List<Object> listgoods = JdbcUtil.getInstance().excuteQuery(sql, null);
+		
 		JSONArray goodinfoList = new JSONArray();
 		int i = 0;
-		for (GoodInfo good : goodslist) {
+		for (Object data : listgoods) {
+			Map<String, Object> row = (Map<String, Object>) data;
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("code", good.getCode());
-			jsonObject.put("name", good.getName());
+			jsonObject.put("code", row.get("goodscode").toString());
+			jsonObject.put("name", row.get("goodsname").toString());
 
 			goodinfoList.put(i, jsonObject);
 			i++;
