@@ -16,7 +16,7 @@ var app = angular.module('addGoodsApp', []);
 	});
 	
 	app.config(['$compileProvider', function ($compileProvider) {
-	    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
+	    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|wxLocalResource|weixin):/);
 	}]);
 
 	app.controller('addgoodsController', function($scope, $http, transFormFactory) {
