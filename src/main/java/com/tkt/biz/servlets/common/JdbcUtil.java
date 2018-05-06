@@ -1,7 +1,10 @@
 ﻿package com.tkt.biz.servlets.common;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -188,6 +191,23 @@ public class JdbcUtil {
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+			String filename= "/applog.txt";
+			
+			String filepath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+			
+			OutputStream out;
+			try {
+				out = new FileOutputStream(filepath + filename);
+				out.write(e.getMessage().getBytes());  
+	            out.flush();  
+	            out.close();
+			} catch (FileNotFoundException e2) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return resultSet;
@@ -257,6 +277,25 @@ public class JdbcUtil {
 			columnCount = rsmd.getColumnCount();
 		} catch (SQLException e1) {
 			System.out.println(e1.getMessage());
+			
+				String filename= "/applog.txt";
+				
+				String filepath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+				
+				OutputStream out;
+				try {
+					out = new FileOutputStream(filepath + filename);
+					out.write(e1.getMessage().getBytes());  
+		            out.flush();  
+		            out.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}      
+	            
 		}
 
 		// 创建List

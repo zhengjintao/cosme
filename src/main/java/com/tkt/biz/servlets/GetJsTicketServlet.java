@@ -33,7 +33,7 @@ public class GetJsTicketServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url =request.getParameter("url");
+		String url =request.getParameter("url").replace("%26", "&");
 		JSONObject jsonObject = new JSONObject();
         try {  
             //获取Ticket  

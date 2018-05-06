@@ -2,11 +2,12 @@ $(document).ready(function() {
 	configWx();
 });
    function configWx() {
-		var thisPageUrl = location.href.split('#')[0];
+		var thisPageUrl = location.href.split('#')[0].replace("&", "%26");
 		$.ajax({ 
 		    type: "post", 
-		    url: "./getJsTicket.do?url="+ thisPageUrl, 
+		    url: "./getJsTicket.do", 
 		    dataType: "json", 
+		    data:{"url":thisPageUrl},
 		    success: function (data) {
 		    	if (data != null) {
 					configWeiXin(data.appId, data.timestamp, data.nonceStr,
@@ -23,7 +24,7 @@ $(document).ready(function() {
 
 	function configWeiXin(appId, timestamp, nonceStr, signature) {
 		wx.config({
-			debug : false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			debug : true,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 			appId : appId,
 			timestamp : timestamp,
 			nonceStr : nonceStr,
