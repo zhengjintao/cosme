@@ -122,7 +122,7 @@ public class ListServlet extends HttpServlet {
 			}
 		}
 		
-		if(searchCode.length() >0){
+		if(goodinfo.length() >0 && searchCode.length() >0){
 			String sql = "select * from cdata_good_add where goodscode=?";
 			Object[] params = new Object[1];
 			params[0] = searchCode;

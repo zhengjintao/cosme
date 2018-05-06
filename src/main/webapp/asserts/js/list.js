@@ -74,6 +74,13 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     		list.cleartext();
     		return;
     	}
+    	if(!list.searchcode.match("^[0-9]{1,50}$")){
+			list.message = "请输入半角数字(1-50位)。";
+
+	            $('.ui.basic.modal') .modal('show');
+				return;
+		 }
+    	
     	$scope.url =  "list.do";
     	var postdata = {'mode':'search', 'searchcode':list.searchcode};
         $http(

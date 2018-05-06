@@ -18,7 +18,7 @@ initdata=<%=request.getAttribute("initdata") %>;
 <script src="dist/semantic.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="asserts/js/addgoods.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script src="asserts/js/wechat.js"></script>
 <style>
 body {
