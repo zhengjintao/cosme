@@ -60,6 +60,12 @@ var app = angular.module('addGoodsApp', []);
 	    		return;
 	    	}
 			
+	    	if(!goodsinfo.price.match("^[0-9]{1,50}$")){
+	    		goodsinfo.message = "请输入半角数字(1-50位)。";
+		        $('.ui.basic.modal') .modal('show');
+			    return;
+			 }
+			
 	    	$scope.url =  "addgoods.do";
 	    	var postdata = {
 	    			'mode':'save',
@@ -75,6 +81,7 @@ var app = angular.module('addGoodsApp', []);
 	    			transformRequest:transFormFactory.transForm,
 	    			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 	    		}).then(function (result) {
+	    			window.location.href = 'list.do?mode=init&goodscode='+ goodsinfo.code;
 	            }).catch(function (result) {
 	            	goodsinfo.message = "SORRY!エラーが発生しました。";
 	            	$('.ui.basic.modal') .modal('show');
