@@ -39,9 +39,13 @@ var app = angular.module('addGoodsApp', []);
 			};
 			  
 		    wx.chooseImage({
+		    	count: 1, // 设置只允许选一张
+		    	sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
+		        sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
 		        success: function (res) {
-		          images.localId = res.localIds;
-		          alert('已选择 ' + res.localIds.length + ' 张图片');
+		        	alert(res);
+		        	goodsinfo.imgurl = res.localIds[0];
+		        	goodsinfo.showimg = !$.isEmptyObject(goodsinfo.imgurl);
 		        }
 		      });
 		}
