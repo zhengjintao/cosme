@@ -60,8 +60,10 @@ var app = angular.module('addGoodsApp', []);
 	    		return;
 	    	}
 			
-	    	$scope.url =  "addGoods.do";
-	    	var postdata = {'goodscode':goodsinfo.code,
+	    	$scope.url =  "addgoods.do";
+	    	var postdata = {
+	    			'mode':'save',
+	    			'goodscode':goodsinfo.code,
 	    			'imgurl':goodsinfo.imgurl,
 	    			'shopname':goodsinfo.shopname,
 	    			'price':goodsinfo.price};
