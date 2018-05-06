@@ -87,6 +87,10 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
             	$('.ui.basic.modal') .modal('show');
             });
     }
+    
+    if(list.searchcode.length >0){
+    	list.search();
+    }
    
   });
   
