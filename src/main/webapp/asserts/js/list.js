@@ -17,7 +17,7 @@ app.config(function($provide){
 
 app.controller('ListController', function($scope,$http,transFormFactory) {
     var list = this;
-    list.searchcode = [];
+    list.searchcode = initdata.goodscode;
     list.goodinfo={};
     list.shoplist = [];
     list.hotgoods = [];

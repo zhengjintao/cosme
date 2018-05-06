@@ -76,8 +76,8 @@ public class ListServlet extends HttpServlet {
 			this.list(request, response);
 		}else if("listhot".equals(mode)){
 			this.listhot(request, response);
-		}else if("listinit".equals(mode)){
-			this.listinit(request, response);
+		}else if("init".equals(mode)){
+			this.init(request, response);
 		}
 	}
 
@@ -162,13 +162,16 @@ public class ListServlet extends HttpServlet {
 
 	}
 	
-	private void listinit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		String goodcode = request.getParameter("goodcode");
-		if(goodcode==null || goodcode.length()==0){
-			goodcode="";
+	private void init(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String goodscode = request.getParameter("goodscode");
+		if(goodscode==null || goodscode.length()==0){
+			goodscode="";
 		}
-		request.setAttribute("goodcode", goodcode);
 		
+		JSONObject initdata = new JSONObject();
+		initdata.put("goodscode", goodscode);
+		
+		request.setAttribute("initdata", initdata);
 		request.getRequestDispatcher("list.jsp").forward(request, response);
 	}
 

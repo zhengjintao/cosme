@@ -15,6 +15,7 @@
 <script src="dist/semantic.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="asserts/js/addGoods.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <style>
 body {
 	margin-top: 10px;
@@ -43,7 +44,7 @@ body {
 		<div class="column">
 			<div class="ui middle aligned divided list">
 				<div class="row">
-					<a class="section" style="color:blue" href="index.html?goodcode={{goodsinfo.code}}"><i class="left chevron icon divider" style="color:blue"></i>返回</a> 
+					<a class="section" style="color:blue" href="list.do?mode=init&goodscode={{goodsinfo.code}}"><i class="left chevron icon divider" style="color:blue"></i>返回</a> 
 				</div>
 			</div>
 			<div class="ui middle aligned divided list"
