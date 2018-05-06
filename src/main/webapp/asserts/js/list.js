@@ -1,39 +1,33 @@
 var app = angular.module('listApp',[]);
+
+app.config(function($provide){
     
-    app.config(function($provide){
-            
-        $provide.factory("transFormFactory",function(){
-            return {
-                transForm : function(obj){
-                    var str = [];  
-                    for(var p in obj){  
-                      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));  
-                    } 
-                    return str.join("&");  
-                }
-            };
-        });
+    $provide.factory("transFormFactory",function(){
+        return {
+            transForm : function(obj){
+                var str = [];  
+                for(var p in obj){  
+                  str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));  
+                } 
+                return str.join("&");  
+            }
+        };
     });
-    
-  app.controller('ListController', function($scope,$http,transFormFactory) {
+});
+
+app.controller('ListController', function($scope,$http,transFormFactory) {
     var list = this;
-    list.currentPage = 1;
-    list.totalPages=3;
-    list.unsalegoods =  [
-        {id:'00001', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-        {id:'00002', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-        {id:'00003', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'}
-        ];
-    list.onsalegoods =  [
-        {id:'00001', text:'learn AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-        {id:'00002', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'199'},
-        {id:'00003', text:'build an AngularJS', img:'asserts/images/lunch.jpeg', price:'299'}
-        ];
+    list.searchcode = [];
+    list.goodinfo={};
+    list.shoplist = [];
+    list.hotgoods = [];
     
-    (function(){
-    	
-    	$scope.url =  "service.do";
-    	var postdata = {'mode':'list'};
+    list.showlist= !$.isEmptyObject(list.goodinfo);
+    list.showaddinfo = !list.showlist;
+    
+    list.listhotgoods = function(){
+    	$scope.url =  "list.do";
+    	var postdata = {'mode':'listhot'};
         $http(
     		{
     			method:"POST",
@@ -42,18 +36,40 @@ var app = angular.module('listApp',[]);
     			transformRequest:transFormFactory.transForm,
     			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
     		}).then(function (result) {
-    			list.onsalegoods = result.data.onsalegoods;
-    			list.unsalegoods = result.data.unsalegoods;
+    			list.hotgoods = result.data.hotgoods;
             }).catch(function (result) {
             	list.message = "SORRY!エラーが発生しました。";
             	$('.ui.basic.modal') .modal('show');
             });
-        
-    })();
+   }
     
-    list.unsale = function(id) {
-    	$scope.url =  "service.do";
-    	var postdata = {'mode':'unsale', 'id': id};
+    list.listhotgoods();
+    
+    list.scanQRCode = function(){
+    	 wx.scanQRCode({
+    	      needResult: 1,
+    	      desc: 'scanQRCode desc',
+    	      success: function (res) {
+    	    	  list.searchcode= res.resultStr.split(",")[1];
+    	    	  list.search();
+    	      }
+    	    });
+    }
+    
+    list.cleartext= function(){
+          list.searchcode= "";
+          list.listhotgoods();
+    	  list.search();
+      }
+
+    list.searchhotgood= function(text){
+      list.searchcode= text;
+  	  list.search();
+    }
+    
+    list.search=function (){
+    	$scope.url =  "list.do";
+    	var postdata = {'mode':'search', 'searchcode':list.searchcode};
         $http(
     		{
     			method:"POST",
@@ -62,30 +78,15 @@ var app = angular.module('listApp',[]);
     			transformRequest:transFormFactory.transForm,
     			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
     		}).then(function (result) {
-    			list.onsalegoods = result.data.onsalegoods;
-    			list.unsalegoods = result.data.unsalegoods;
+    			list.shoplist = result.data.shoplist;
+    			list.goodinfo = result.data.goodinfo;
+    			list.showlist= !$.isEmptyObject(list.goodinfo);
+    			list.showaddinfo = !list.showlist;
             }).catch(function (result) {
-            	orderList.message = "SORRY!エラーが発生しました。";
+            	list.message = "SORRY!エラーが発生しました。";
             	$('.ui.basic.modal') .modal('show');
             });
     }
-    
-    list.onsale = function(id) {
-    	$scope.url =  "service.do";
-    	var postdata = {'mode':'onsale', 'id': id};
-        $http(
-    		{
-    			method:"POST",
-    			url:$scope.url,
-    			data:postdata,
-    			transformRequest:transFormFactory.transForm,
-    			headers:{'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-    		}).then(function (result) {
-    			list.onsalegoods = result.data.onsalegoods;
-    			list.unsalegoods = result.data.unsalegoods;
-            }).catch(function (result) {
-            	orderList.message = "SORRY!エラーが発生しました。";
-            	$('.ui.basic.modal') .modal('show');
-            });
-    }
+   
   });
+  

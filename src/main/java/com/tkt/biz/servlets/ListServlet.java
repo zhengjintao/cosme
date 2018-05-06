@@ -76,6 +76,8 @@ public class ListServlet extends HttpServlet {
 			this.list(request, response);
 		}else if("listhot".equals(mode)){
 			this.listhot(request, response);
+		}else if("listinit".equals(mode)){
+			this.listinit(request, response);
 		}
 	}
 
@@ -158,6 +160,16 @@ public class ListServlet extends HttpServlet {
 
 		response.getWriter().write(result.toString());
 
+	}
+	
+	private void listinit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String goodcode = request.getParameter("goodcode");
+		if(goodcode==null || goodcode.length()==0){
+			goodcode="";
+		}
+		request.setAttribute("goodcode", goodcode);
+		
+		request.getRequestDispatcher("list.jsp").forward(request, response);
 	}
 
 }

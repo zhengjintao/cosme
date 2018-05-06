@@ -43,12 +43,9 @@ body {
 		<div class="column">
 			<div class="ui middle aligned divided list">
 				<div class="row">
-					<div class="ui  breadcrumb">
-						<a class="section">新商品追加</a> <i class="right chevron icon divider"></i>
-					</div>
+					<a class="section" style="color:blue" href="index.html?goodcode={{goodsinfo.code}}"><i class="left chevron icon divider" style="color:blue"></i>返回</a> 
 				</div>
 			</div>
-
 			<div class="ui middle aligned divided list"
 				ng-show=goodsinfo.showcamera>
 				<div class="item">
