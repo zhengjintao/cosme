@@ -3,6 +3,7 @@ package com.tkt.biz.servlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.tkt.biz.servlets.common.JdbcUtil;
 import com.tkt.biz.servlets.pojo.GoodInfo;
 import com.tkt.biz.servlets.pojo.ShopGoodInfo;
 
@@ -21,48 +23,43 @@ import com.tkt.biz.servlets.pojo.ShopGoodInfo;
 public class ListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static List<GoodInfo> goodslist = new ArrayList<GoodInfo>();
-	private static List<ShopGoodInfo> shopGoodInfoList = new ArrayList<ShopGoodInfo>();
-
-	static {
-		// Test data
-		GoodInfo good = new GoodInfo();
-		good.setCode("0001");
-		good.setName("おいしい弁当");
-		good.setImgurl("asserts/images/lunch.jpeg");
-
-		GoodInfo good2 = new GoodInfo();
-		good2.setCode("4936201100941");
-		good2.setName("food no2");
-		good2.setImgurl("asserts/images/lunch2.jpeg");
-
-		goodslist.add(good);
-		goodslist.add(good2);
-
-		ShopGoodInfo shopinfo = new ShopGoodInfo();
-		shopinfo.setGoodCode("0001");
-		shopinfo.setShopName("松本清川口店");
-		shopinfo.setPrice("199");
-
-		ShopGoodInfo shopinfo2 = new ShopGoodInfo();
-		shopinfo2.setGoodCode("0001");
-		shopinfo2.setShopName("shop2");
-		shopinfo2.setPrice("299");
-
-		ShopGoodInfo shopinfo3 = new ShopGoodInfo();
-		shopinfo3.setGoodCode("4936201100941");
-		shopinfo3.setShopName("松本清上野店");
-		shopinfo3.setPrice("399");
-
-		shopGoodInfoList.add(shopinfo);
-		shopGoodInfoList.add(shopinfo2);
-		shopGoodInfoList.add(shopinfo3);
-	}
+	private List<GoodInfo> goodslist = new ArrayList<GoodInfo>();
+	private List<ShopGoodInfo> shopGoodInfoList = new ArrayList<ShopGoodInfo>();
 
 	/**
 	 * Default constructor.
 	 */
 	public ListServlet() {
+	}
+	
+	private void initdata(){
+		String sql = "select * from cmstr_goods";
+		List<Object> listgoods = JdbcUtil.getInstance().excuteQuery(sql, null);
+
+		goodslist = new ArrayList<GoodInfo>();
+		
+		for (Object data : listgoods) {
+			Map<String, Object> row = (Map<String, Object>) data;
+			GoodInfo good = new GoodInfo();
+			good.setCode(row.get("goodscode").toString());
+			good.setName(row.get("goodsname").toString());
+			good.setImgurl(row.get("imgurl").toString());
+			goodslist.add(good);
+		}
+		
+		sql = "select * from cdata_goodsinfo info left join cmstr_goods goods on info.goodscode=goods.goodscode"
+				+ " left join cmstr_shop shop on info.shopcode=shop.shopcode";
+		List<Object> listgoodsinfo = JdbcUtil.getInstance().excuteQuery(sql, null);
+		shopGoodInfoList = new ArrayList<ShopGoodInfo>();
+		
+		for (Object data : listgoodsinfo) {
+			Map<String, Object> row = (Map<String, Object>) data;
+			ShopGoodInfo goodinfo = new ShopGoodInfo();
+			goodinfo.setGoodCode(row.get("goodscode").toString());
+			goodinfo.setShopName(row.get("shopname").toString());
+			goodinfo.setPrice(row.get("price").toString());
+			shopGoodInfoList.add(goodinfo);
+		}
 	}
 
 	/**
@@ -72,6 +69,7 @@ public class ListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String mode = request.getParameter("mode");
+		initdata();
 		if("search".equals(mode)){
 			this.list(request, response);
 		}else if("listhot".equals(mode)){

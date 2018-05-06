@@ -32,6 +32,12 @@
 		<description></description>
 		<servlet-class>com.tkt.biz.servlets.AddGoodsServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>DeployServlet</servlet-name>
+		<display-name>DeployServlet</display-name>
+		<description></description>
+		<servlet-class>com.tkt.biz.servlets.DeployServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>GetJsTicketServlet</servlet-name>
@@ -44,5 +50,9 @@
 	<servlet-mapping>
 		<servlet-name>AddGoodsServlet</servlet-name>
 		<url-pattern>/addgoods.do</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeployServlet</servlet-name>
+		<url-pattern>/deploy.do</url-pattern>
 	</servlet-mapping>
 </web-app>
