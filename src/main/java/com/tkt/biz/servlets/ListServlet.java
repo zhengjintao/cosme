@@ -71,8 +71,12 @@ public class ListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		this.list(request, response);
-
+		String mode = request.getParameter("mode");
+		if("search".equals(mode)){
+			this.list(request, response);
+		}else if("listhot".equals(mode)){
+			this.listhot(request, response);
+		}
 	}
 
 	/**
@@ -85,7 +89,7 @@ public class ListServlet extends HttpServlet {
 	}
 
 	/**
-	 * ログイン処理
+	 * 検索
 	 * 
 	 * @param request
 	 * @param response
@@ -98,6 +102,7 @@ public class ListServlet extends HttpServlet {
 		for (GoodInfo good : goodslist) {
 			if (good.getCode().equals(searchCode)) {
 				goodinfo.put("code", good.getCode());
+				goodinfo.put("name", good.getName());
 				goodinfo.put("imgurl", good.getImgurl());
 				break;
 			}
@@ -121,6 +126,35 @@ public class ListServlet extends HttpServlet {
 		JSONObject result = new JSONObject();
 		result.put("goodinfo", goodinfo);
 		result.put("shoplist", shopinfoList);
+
+		response.getWriter().write(result.toString());
+
+	}
+	
+	/**
+	 * 検索
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void listhot(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+		JSONArray goodinfoList = new JSONArray();
+		int i = 0;
+		for (GoodInfo good : goodslist) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("code", good.getCode());
+			jsonObject.put("name", good.getName());
+
+			goodinfoList.put(i, jsonObject);
+			i++;
+		}
+
+		// 最終結果
+		JSONObject result = new JSONObject();
+		result.put("hotgoods", goodinfoList);
 
 		response.getWriter().write(result.toString());
 
