@@ -102,12 +102,12 @@ body {
 			<div class="row">
 				<div class="ui celled middle aligned divided list">
 				<div class="item">
-						<a href="addgoods.do?mode=init&goodscode={{list.searchcode}}&imgurl={{list.goodinfo.imgurl}}">点击追加新店铺>></a>
+						<a href="addgoods.do?mode=init&goodscode={{list.searchcode}}&goodsname={{list.goodinfo.name}}&imgurl={{list.goodinfo.imgurl}}">点击追加新店铺>></a>
 					</div>
 				
 					<div class="item" ng-repeat="shop in list.shoplist">
 						<div class="right floated content">
-							<a class="label" href="addgoods.do?mode=init&goodscode={{list.searchcode}}&imgurl={{list.goodinfo.imgurl}} ">${{shop.price}}</a>
+							<a class="label" href="addgoods.do?mode=init&goodscode={{list.searchcode}}&goodsname={{list.goodinfo.name}}&shopcode={{shop.code}}&shopname={{shop.name}}&imgurl={{list.goodinfo.imgurl}} ">${{shop.price}}</a>
 						</div>
 						<div class="content">{{shop.name}}</div>
 					</div>

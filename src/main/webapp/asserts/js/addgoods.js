@@ -14,16 +14,24 @@ var app = angular.module('addGoodsApp', []);
 			};
 		});
 	});
+	
+	app.config(['$compileProvider', function ($compileProvider) {
+	    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
+	}]);
 
 	app.controller('addgoodsController', function($scope, $http, transFormFactory) {
 		var goodsinfo = this;
 		
 		// 商品编码
 		goodsinfo.code = initdata.goodscode;
+		// 商品名称
+		goodsinfo.name = initdata.goodsname;
 		// 商品图片
 		goodsinfo.imgurl = initdata.imgurl;
+		// 店铺编号
+		goodsinfo.shopcode = initdata.shopcode;
 		// 店铺名称
-		goodsinfo.shopname = "";
+		goodsinfo.shopname = initdata.shopname;
 		// 商品价格
 		goodsinfo.price = "";
 		// 相机图标显示FLG
@@ -43,9 +51,8 @@ var app = angular.module('addGoodsApp', []);
 		    	sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
 		        sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
 		        success: function (res) {
-		        	alert(res);
-		        	goodsinfo.imgurl = res.localIds[0];
-		        	goodsinfo.showimg = !$.isEmptyObject(goodsinfo.imgurl);
+		        	$(".show-image").attr("src", res.localIds[0]);
+		        	goodsinfo.showimg = true;
 		        }
 		      });
 		}
@@ -53,9 +60,9 @@ var app = angular.module('addGoodsApp', []);
 		// 店铺商品保存处理
 		goodsinfo.save = function() {
 			if(goodsinfo.showcamera && "" == goodsinfo.imgurl){
-				goodsinfo.message = "请拍摄商品图片";
-	    		$('.ui.basic.modal') .modal('show');
-	    		return;
+				//goodsinfo.message = "请拍摄商品图片";
+	    		//$('.ui.basic.modal') .modal('show');
+	    		//return;
 	    	}
 			
 			if("" == goodsinfo.price){
@@ -74,7 +81,9 @@ var app = angular.module('addGoodsApp', []);
 	    	var postdata = {
 	    			'mode':'save',
 	    			'goodscode':goodsinfo.code,
+	    			'goodsname':goodsinfo.name,
 	    			'imgurl':goodsinfo.imgurl,
+	    			'shopcode':goodsinfo.shopcode,
 	    			'shopname':goodsinfo.shopname,
 	    			'price':goodsinfo.price};
 	        $http(

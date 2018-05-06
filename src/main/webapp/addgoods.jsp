@@ -10,16 +10,18 @@
 <title>cosme navix</title>
 <link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
-
-<script>
-initdata=<%=request.getAttribute("initdata") %>;
-</script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/semantic.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="asserts/js/addgoods.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script src="asserts/js/wechat.js"></script>
+<script>
+initdata=<%=request.getAttribute("initdata") %>;
+
+$("#goodsname").attr("readonly",true);
+$("#shopsname").attr("readonly",false);
+</script>
 <style>
 body {
 	margin-top: 10px;
@@ -62,15 +64,22 @@ body {
 			</div>
 			<div class="row" ng-show=goodsinfo.showimg>
 				<div class="ui card">
-					<a class="image" href="#"> <img src={{goodsinfo.imgurl}}></a>
+					<a class="image" href="#"> <img class= "show-image" ng-src={{goodsinfo.imgurl}}></a>
 				</div>
 			</div>
 			<div class="ui middle aligned divided list">
 				<div class="item">
 					<div class="ui labeled input">
 						<div class="ui label">商品编码</div>
-						<input id="euserid" name="euserid" type="text"
-							ng-model=goodsinfo.code readonly="readonly">
+						<input type="text" ng-model=goodsinfo.code readonly="readonly">
+					</div>
+				</div>
+			</div>
+			<div class="ui middle aligned divided list">
+				<div class="item">
+					<div class="ui labeled input">
+						<div class="ui label">商品名称</div>
+						<input id="goodsname" type="text" ng-model=goodsinfo.name>
 					</div>
 				</div>
 			</div>
@@ -78,8 +87,7 @@ body {
 				<div class="item">
 					<div class="ui labeled input">
 						<div class="ui label">店铺名称</div>
-						<input id="euserid" name="euserid" type="text"
-							ng-model=goodsinfo.shopname>
+						<input id="shopname" type="text" ng-model=goodsinfo.shopname>
 					</div>
 				</div>
 			</div>
@@ -87,8 +95,7 @@ body {
 				<div class="item">
 					<div class="ui labeled input">
 						<div class="ui label">商品价格</div>
-						<input id="euserid" name="euserid" type="text"
-							ng-model=goodsinfo.price>
+						<input type="text" ng-model=goodsinfo.price>
 					</div>
 				</div>
 			</div>

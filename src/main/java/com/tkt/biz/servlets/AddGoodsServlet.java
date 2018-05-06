@@ -42,13 +42,26 @@ public class AddGoodsServlet extends HttpServlet {
 	 */
 	private void init(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String goodscode = request.getParameter("goodscode");
+		String goodsname = request.getParameter("goodsname");
+		String shopcode = request.getParameter("shopcode");
+		String shopname = request.getParameter("shopname");
 		String imgurl = request.getParameter("imgurl");
 		
 		goodscode = (goodscode==null || goodscode.length()==0) ? "" : goodscode;
+		goodsname = (goodsname==null || goodsname.length()==0) ? "" : goodsname;
+		if(goodsname != null){
+			goodsname = new String(goodsname.getBytes("iso-8859-1"), "utf-8");
+		}
+		if(shopname != null){
+			shopname = new String(shopname.getBytes("iso-8859-1"), "utf-8");
+		}
 		imgurl = (imgurl==null || imgurl.length()==0) ? "" : imgurl;
 		
 		JSONObject initdata = new JSONObject();
 		initdata.put("goodscode", goodscode);
+		initdata.put("goodsname", goodsname);
+		initdata.put("shopcode", shopcode);
+		initdata.put("shopname", shopname);
 		initdata.put("imgurl", imgurl);
 		
 		request.setAttribute("initdata", initdata);
@@ -65,13 +78,14 @@ public class AddGoodsServlet extends HttpServlet {
 	 */
 	private void save(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String goodscode = request.getParameter("goodscode");
+		String goodsname = request.getParameter("goodsname");
 		String imgurl = request.getParameter("imgurl");
 		String shopcode = request.getParameter("shopcode");
 		String shopname = request.getParameter("shopname");
 		String price = request.getParameter("price");
 		
 		// 商品追加
-		addGoodsMastr(goodscode,"",imgurl);
+		addGoodsMastr(goodscode,goodsname,imgurl);
 		
 		// 店铺追加
 		shopcode = addShopMastr(shopcode,shopname);
