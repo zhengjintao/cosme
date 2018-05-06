@@ -23,7 +23,7 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     list.hotgoods = [];
     
     list.showlist= !$.isEmptyObject(list.goodinfo);
-    list.showaddinfo = list.searchcode.length > 0 && !list.showlist;
+    list.showaddinfo = !list.showlist;
     
     list.listhotgoods = function(){
     	$scope.url =  "list.do";
@@ -59,9 +59,7 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     list.cleartext= function(){
           list.searchcode= "";
           list.listhotgoods();
-          list.goodinfo=[];
-          list.showlist= !$.isEmptyObject(list.goodinfo);
-		  list.showaddinfo = list.searchcode.length > 0 && !list.showlist;
+    	  list.search();
       }
 
     list.searchhotgood= function(text){
@@ -70,10 +68,6 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     }
     
     list.search=function (){
-    	if(list.searchcode.length == 0){
-    		list.cleartext();
-    		return;
-    	}
     	$scope.url =  "list.do";
     	var postdata = {'mode':'search', 'searchcode':list.searchcode};
         $http(
@@ -87,7 +81,7 @@ app.controller('ListController', function($scope,$http,transFormFactory) {
     			list.shoplist = result.data.shoplist;
     			list.goodinfo = result.data.goodinfo;
     			list.showlist= !$.isEmptyObject(list.goodinfo);
-    			list.showaddinfo = list.searchcode.length > 0 && !list.showlist;;
+    			list.showaddinfo = !list.showlist;
             }).catch(function (result) {
             	list.message = "SORRY!エラーが発生しました。";
             	$('.ui.basic.modal') .modal('show');
