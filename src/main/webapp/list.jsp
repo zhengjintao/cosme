@@ -69,8 +69,8 @@ body {
 				</div>
 			</div>
 			<h4 class="ui horizontal divider header"></h4>
-			<div ng-show=list.showaddinfo>
-			<div class="row">
+			<div ng-show=!list.showlist>
+			<div class="row" ng-show=list.showaddinfo>
 			<a href="addgoods.do?mode=init&goodscode={{list.searchcode}}&imgurl={{list.goodinfo.imgurl}}">未搜索到相关商品，点击追加>></a>
 			</div>
 			<h4 class="ui horizontal divider red header">
