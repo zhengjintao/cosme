@@ -71,7 +71,7 @@ body {
 			<h4 class="ui horizontal divider header"></h4>
 			<div ng-show=list.showaddinfo>
 			<div class="row">
-			<a href="addGoods.jsp">未搜索到相关商品，点击追加>></a>
+			<a href="addgoods.do?mode=init&goodscode={{list.searchcode}}&imgurl={{list.goodinfo.imgurl}}">未搜索到相关商品，点击追加>></a>
 			</div>
 			<h4 class="ui horizontal divider red header">
 				<i>热门</i>
@@ -102,12 +102,12 @@ body {
 			<div class="row">
 				<div class="ui celled middle aligned divided list">
 				<div class="item">
-						<a href="addGoods.jsp">点击追加新店铺>></a>
+						<a href="addgoods.do?mode=init&goodscode={{list.searchcode}}&imgurl={{list.goodinfo.imgurl}}">点击追加新店铺>></a>
 					</div>
 				
 					<div class="item" ng-repeat="shop in list.shoplist">
 						<div class="right floated content">
-							<a class="label" href="addGoods.jsp">${{shop.price}}</a>
+							<a class="label" href="addgoods.do?mode=init&goodscode={{list.searchcode}}&imgurl={{list.goodinfo.imgurl}} ">${{shop.price}}</a>
 						</div>
 						<div class="content">{{shop.name}}</div>
 					</div>

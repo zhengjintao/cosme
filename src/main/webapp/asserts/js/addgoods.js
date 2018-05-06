@@ -19,9 +19,9 @@ var app = angular.module('addGoodsApp', []);
 		var goodsinfo = this;
 		
 		// 商品编码
-		goodsinfo.code = "00000021";
+		goodsinfo.code = initdata.goodscode;
 		// 商品图片
-		goodsinfo.imgurl = "asserts/images/lunch.jpeg";
+		goodsinfo.imgurl = initdata.imgurl;
 		// 店铺名称
 		goodsinfo.shopname = "";
 		// 商品价格
@@ -32,7 +32,18 @@ var app = angular.module('addGoodsApp', []);
 		goodsinfo.showimg = !$.isEmptyObject(goodsinfo.imgurl);
 		
 		// 商品图片（拍照）
-		goodsinfo.getimg = function() {
+		goodsinfo.chooseImage = function() {
+			var images = {
+				localId: [],
+				serverId: []
+			};
+			  
+		    wx.chooseImage({
+		        success: function (res) {
+		          images.localId = res.localIds;
+		          alert('已选择 ' + res.localIds.length + ' 张图片');
+		        }
+		      });
 		}
 		
 		// 店铺商品保存处理
@@ -50,7 +61,10 @@ var app = angular.module('addGoodsApp', []);
 	    	}
 			
 	    	$scope.url =  "addGoods.do";
-	    	var postdata = {'code':goodsinfo.code};
+	    	var postdata = {'goodscode':goodsinfo.code,
+	    			'imgurl':goodsinfo.imgurl,
+	    			'shopname':goodsinfo.shopname,
+	    			'price':goodsinfo.price};
 	        $http(
 	    		{
 	    			method:"POST",

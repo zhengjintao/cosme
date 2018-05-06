@@ -11,11 +11,15 @@
 <link rel="shortcut icon" type="image/png" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
 
+<script>
+initdata=<%=request.getAttribute("initdata") %>;
+</script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="dist/semantic.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="asserts/js/addGoods.js"></script>
+<script src="asserts/js/addgoods.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="asserts/js/wechat.js"></script>
 <style>
 body {
 	margin-top: 10px;
@@ -51,7 +55,7 @@ body {
 				ng-show=goodsinfo.showcamera>
 				<div class="item">
 					<button type="button" class="ui icon button"
-						style="margin-left: 1px" ng-click="goodsinfo.getimg()">
+						style="margin-left: 1px" ng-click="goodsinfo.chooseImage()">
 						<i class="camera icon"></i>
 					</button>
 				</div>
