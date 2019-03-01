@@ -1,0 +1,110 @@
+﻿<html ng-app="listApp">
+<head>
+<!-- Standard Meta -->
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<!-- Site Properties -->
+<title>easy代购</title>
+<!-- <link rel="shortcut icon" type="image/png" href="favicon.ico">-->
+<link rel="stylesheet" type="text/css" href="dist/semantic.min.css">
+
+<script>
+</script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="dist/semantic.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="asserts/js/purchaselist.js"></script>
+<style>
+body {
+	margin-top: 10px;
+	font: 12px sans-serif;
+}
+</style>
+
+</head>
+<body ng-controller="ListController as list">
+	<div class="ui modal">
+	  <div class="header">新订单</div>
+	  <div class="scrolling content">
+			<form class="ui form">
+       <div class="field">
+        <label>商品名称</label>
+        <input type="text" name="first-name" placeholder="必须输入" ng-model="list.neworderdata.goodsname">
+      </div>
+      <div class="field">
+       <label>客户名</label>
+       <input type="text" name="last-name" placeholder="必须输入" ng-model="list.neworderdata.customnm">
+      </div>
+			<div class="field">
+       <label>数量</label>
+       <input type="number" name="last-name" placeholder="必须为数字" ng-model="list.neworderdata.total">
+      </div>
+      <button class="ui button" ng-click="list.addorder()" >Add</button>
+    </form>
+	  </div>
+	</div>
+
+<div class="ui container">
+  <button class="ui basic button" ng-click="list.neworder()">新增采购</button>
+  <div class="ui divider"></div>
+   <div class="mini ui buttons">
+  <div class="ui labeled button" tabindex="0">
+    <div class="ui basic blue button">
+      总数
+    </div>
+    <a class="ui basic blue left pointing label">
+		{{list.totalnum}}
+    </a>
+   </div>
+     <div class="mini ui labeled button" tabindex="1" style="margin-left:10px">
+       <div class="ui basic red button">
+       待采购
+     </div>
+      <a class="ui basic left pointing red label">
+       {{list.totalrest}}
+     </a>
+     </div>
+
+
+		 		 <div class="ui right floated basic button" tabindex="0">
+		 			 <div class="ui checkbox">
+		   <input type="checkbox" name="example" ng-model="list.onlyshowrest" ng-change="list.chkchange()">
+		   <label>仅显示待采购</label>
+		    </div>
+		 	    </div>
+
+     </div>
+
+
+  <table class="ui fixed unstackable table">
+  <thead>
+    <tr>
+      <th class="five wide ">商品名</th>
+      <th class="two wide ">总数</th>
+      <th class="two wide ">待购</th>
+      <th class="seveen wide center aligned">详细</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="order in list.orderlist">
+      <td><a ng-click="list.search(order.goodsname)">{{order.goodsname}}</a></td>
+      <td>{{order.totalnum}}</td>
+      <td>{{order.restnum}}</td>
+			<td>
+				<div class="ui  selection list">
+				  <a class="item" ng-repeat="detail in order.detaillist" ng-click="list.itemedit(order, detail)">
+				    <div class="right floated ui {{detail.style}} horizontal label">{{detail.customnm}} ( {{detail.num-detail.rest}}/{{detail.num}})</div>
+
+				  </a>
+				</div>
+    </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>
