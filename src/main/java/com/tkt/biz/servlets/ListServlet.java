@@ -41,6 +41,9 @@ public class ListServlet extends HttpServlet {
 		for (Object data : listgoods) {
 			Map<String, Object> row = (Map<String, Object>) data;
 			GoodInfo good = new GoodInfo();
+			if (row.get("goodscode") == null){
+				continue;
+			}
 			good.setCode(row.get("goodscode").toString());
 			good.setName(row.get("goodsname").toString());
 			good.setImgurl(row.get("imgurl").toString());
@@ -173,6 +176,9 @@ public class ListServlet extends HttpServlet {
 		for (Object data : listgoods) {
 			Map<String, Object> row = (Map<String, Object>) data;
 			JSONObject jsonObject = new JSONObject();
+			if (row.get("goodscode") == null){
+				continue;
+			}
 			jsonObject.put("code", row.get("goodscode").toString());
 			jsonObject.put("name", row.get("goodsname").toString());
 

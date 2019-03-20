@@ -62,11 +62,7 @@ body {
 					</button>
 				</div>
 			</div>
-			<div class="row" ng-show=goodsinfo.showimg>
-				<div class="ui card">
-					<a class="image" href="#"> <img class= "show-image" ng-src={{goodsinfo.imgurl}}></a>
-				</div>
-			</div>
+			
 			<div class="ui middle aligned divided list">
 				<div class="item">
 					<div class="ui labeled input">

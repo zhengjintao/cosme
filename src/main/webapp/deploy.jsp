@@ -20,6 +20,10 @@
 	function check() {
 		return true;
 	}
+	var message = '<%=request.getAttribute("message") %>';
+	if(message.length >0){
+		alert(message);
+	};
 </script>
 <style>
 body {
@@ -41,6 +45,21 @@ footer {
 
 </head>
 <body>
+
+       <div class="ui basic modal" id="basemodal">
+		<div class="ui icon header">
+			<i class="archive icon"></i><%=request.getAttribute("message") %>
+		</div>
+		<!-- <div class="content">
+			<p>Your inbox is getting full, would you like us to enable
+				automatic archiving of old messages?</p>
+		</div> -->
+		<div class="actions">
+			<div class="ui green basic cancel inverted button">
+				<i class="checkmark icon"></i> OK
+			</div>
+		</div>
+	    </div>
 
 	<div class="ui one column grid container">
 		<div class="column" style="margin-top: 10px;">

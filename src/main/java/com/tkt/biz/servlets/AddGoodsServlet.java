@@ -49,13 +49,15 @@ public class AddGoodsServlet extends HttpServlet {
 		
 		goodscode = (goodscode==null || goodscode.length()==0) ? "" : goodscode;
 		goodsname = (goodsname==null || goodsname.length()==0) ? "" : goodsname;
+		shopcode = (shopcode==null || shopcode.length()==0) ? "" : shopcode;
+		shopname = (shopname==null || shopname.length()==0) ? "" : shopname;
 		if(goodsname != null){
 			goodsname = new String(goodsname.getBytes("iso-8859-1"), "utf-8");
 		}
 		if(shopname != null){
 			shopname = new String(shopname.getBytes("iso-8859-1"), "utf-8");
 		}
-		imgurl = (imgurl==null || imgurl.length()==0) ? "" : imgurl;
+		imgurl = (imgurl==null || imgurl.length()==0) ? "/asserts/images/noimg.jpg" : imgurl;
 		
 		JSONObject initdata = new JSONObject();
 		initdata.put("goodscode", goodscode);
@@ -91,11 +93,12 @@ public class AddGoodsServlet extends HttpServlet {
 		shopcode = addShopMastr(shopcode,shopname);
 		
 		// 店铺商品追加
-		String sql = "insert into cdata_goodsinfo values(?,?,?)";
-		Object[] params = new Object[3];
-		params[0] = goodscode;
+		String sql = "insert into cdata_goodsinfo values(?,?,?,?)";
+		Object[] params = new Object[4];
 		params[1] = shopcode;
-		params[2] = price;
+		params[1] = goodscode;
+		params[2] = shopcode;
+		params[3] = price;
 		JdbcUtil.getInstance().executeUpdate(sql, params);
 	}
 	
@@ -127,14 +130,20 @@ public class AddGoodsServlet extends HttpServlet {
 	 */
 	private String addShopMastr(String shopcode,String shopname){
 		if(shopcode == "" || shopcode == null){
-			
+			shopcode = "0";
 			// 新店铺CODE取得 MAX+1
 			String sql = "SELECT max(shopcode) as code FROM cmstr_shop";
 			List<Object> maxshopcode = JdbcUtil.getInstance().excuteQuery(sql, null);
 			
 			for (Object code : maxshopcode) {
+				if (code == null){
+					continue;
+				}
 				Map<String, Object> row = (Map<String, Object>) code;
-				shopcode = row.get("code").toString();
+				Object data = row.get("code");
+				if (data != null){
+					shopcode = data.toString();
+				}
 			}
 			int maxcode = Integer.parseInt(shopcode);
 			maxcode = maxcode +1;

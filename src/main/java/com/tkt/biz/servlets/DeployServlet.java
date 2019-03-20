@@ -3,6 +3,7 @@ package com.tkt.biz.servlets;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.tkt.biz.servlets.common.JdbcUtil;
 
 /**
  * Servlet implementation class DeployServlet
@@ -91,6 +94,18 @@ public class DeployServlet extends HttpServlet {
 		    password = prop.getProperty("jdbc.password");;
 			request.setAttribute("password", password);
 			
+			String message="Deploy begin.";
+			try{
+			String sql="select * from cmstr_goods";
+			List<Object> result = JdbcUtil.getInstance().excuteQuery(sql, null);
+			
+			if(result.size()>0){
+				message="Deploy sucess.";
+			}}catch(Exception e){
+				message="Deploy faild." + e.getMessage();
+			}
+			
+			request.setAttribute("message", message);
 			RequestDispatcher re = request.getRequestDispatcher("deploy.jsp");
 			re.forward(request, response);
 		}

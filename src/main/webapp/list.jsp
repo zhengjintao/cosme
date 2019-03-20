@@ -86,8 +86,7 @@ body {
 			<div ng-show=list.showlist>
 			<div class="row">
 				<div class="ui card">
-					<a class="image" href="#"> <img src={{list.goodinfo.imgurl}}>
-					</a>
+				
 					<div class="content" style="text-align: center">
 						<a class="header" href="#">{{list.goodinfo.code}}</a>
 						<div class="meta">
